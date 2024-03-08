@@ -1,6 +1,6 @@
 const client = require('./client')
 
-async function createPost({ item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, image, user_id, category_id, date_created, isHeadline, isFeatured }) {
+async function createPost({ item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, image, user_id, category_id, date_created }) {
     try {
       // Check if image data is in the correct format
       if (!image.startsWith('data:image/')) {
@@ -13,10 +13,10 @@ async function createPost({ item_name, description, price, contact_type, contact
   
       // Insert the post into the database
       const { rows: [post] } = await client.query(`
-        INSERT INTO posts (item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, image, user_id, category_id, date_created, isHeadline, isFeatured)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+        INSERT INTO posts (item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, image, user_id, category_id, date_created)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING *;
-      `, [item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, imageData, user_id, category_id, date_created, isHeadline, isFeatured]);
+      `, [item_name, description, price, contact_type, contact, backup_contact_type, backup_contact, report_count, location, state, imageData, user_id, category_id, date_created]);
   
       console.log(post);
   
@@ -31,7 +31,7 @@ async function createPost({ item_name, description, price, contact_type, contact
 async function getAllPosts() {
   try {
     //Gets a collection of all posts
-    //Joins as
+    //Joins categories to easily switch on front end
     const query = `
       SELECT posts.*, categories.name AS category_name
       FROM posts
@@ -143,8 +143,5 @@ module.exports = {
   getPostById,
   updatePost,
   deletePost,
-  subscribeUser,
-  getAllSubscribedEmails,
-  unsubscribeEmail,
   getPostsByCategoryId
 };

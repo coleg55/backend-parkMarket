@@ -2,7 +2,7 @@ const client = require('./client');
 const SALT_COUNT = 10;
 const bcrypt = require('bcrypt');
 
-async function createOwner({ username, email, password, is_owner, is_admin}) {
+async function createOwner({ username, email, password, is_owner, is_admin }) {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
     // Validate password requirements
